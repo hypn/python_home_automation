@@ -1,3 +1,6 @@
+# import piface.pfio as pfio
+# pfio.init()
+
 from flask import Flask, render_template
 from werkzeug import SharedDataMiddleware
 
@@ -15,11 +18,15 @@ def home():
 
 @app.route('/on/<pin_id>')
 def on(pin_id):
-    return 'Turning pin ' + pin_id + ' ON'
+  # global pfio
+  # pfio.digital_write(pin_id, 1)
+  return 'Turning pin ' + pin_id + ' ON'
 
 @app.route('/off/<pin_id>')
 def off(pin_id):
-    return 'Turning pin ' + pin_id + ' OFF'
+  # global pfio
+  # pfio.digital_write(pin_id, 0)
+  return 'Turning pin ' + pin_id + ' OFF'
 
 if __name__ == '__main__':
   app.run(debug=True)
