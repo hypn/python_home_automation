@@ -20,17 +20,15 @@ def home():
 def on(pin_id):
   global pfio
   pfio.digital_write(int(pin_id), 1)
-  state = pfio.digital_read(int(pin_id))
-  #print 'Turning pin ' + pin_id + ' ON, state = ' + str(state)
-  return "on" if state == 1 else "error"
+  #pfio.digital_write(1, 1)
+  return 'Turning pin ' + pin_id + ' ON'
 
 @app.route('/off/<pin_id>')
 def off(pin_id):
   global pfio
   pfio.digital_write(int(pin_id), 0)
-  state = pfio.digital_read(int(pin_id))
-  #print 'Turning pin ' + pin_id + ' OFF, state = ' + str(state)
-  return "off" if state == 0 else "error"
+  #pfio.digital_write(1, 0)
+  return 'Turning pin ' + pin_id + ' OFF'
 
 if __name__ == '__main__':
   app.run('0.0.0.0', 80)
