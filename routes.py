@@ -16,6 +16,11 @@ app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
 def home():
   return render_template('home.html')
 
+@app.route('/status/<pin_id>')
+def status(pin_id):
+  global pfio
+  return "on" if pfio.digital_read(int(pin_id)) == 1 else "off"
+
 @app.route('/on/<pin_id>')
 def on(pin_id):
   global pfio
