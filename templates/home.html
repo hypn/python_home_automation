@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block content %}
 <html>
 <head>
@@ -32,6 +31,10 @@ td {
   text-align: center;
   vertical-align: middle;
 }
+#icon {
+  padding-right: 5px;
+  width: 16px;
+}
 </style>
 </head>
 <body>
@@ -44,6 +47,7 @@ for (var i=1;i<=8;i++)
 {
   var table = document.getElementById("controls");
   var row = table.insertRow(-1);
+  row.id = "row"+i;
   if (i % 2 == 0)
   {
     row.className = "alt";
@@ -54,25 +58,57 @@ for (var i=1;i<=8;i++)
   var cell3 = row.insertCell(2);
   var cell4 = row.insertCell(3);
 
-  cell1.innerHTML = "<strong>Lights #"+i+"</strong>";
+  cell1.innerHTML = '<span id="icon"><img src="/lightbulb-off-icon.png"></span><strong>Lights #'+i+'</strong>';
   cell2.innerHTML = "&nbsp;";
   cell3.innerHTML = '<a href="/on/'+i+'" class="on_button">On</button>';
   cell4.innerHTML = '<a href="/off/'+i+'" class="off_button">Off</button>';
 }
 </script>
+
 <script>
+function image_tag(data) {
+  if (data == 'on') {
+    return('<img src="/lightbulb-icon.png">');
+  }
+  else if (data == 'off') {
+    return('<img src="/lightbulb-off-icon.png">');
+  }
+  else {
+    return('<img src="/exclamation-icon.png">');  
+  }
+}
+
+function update_icon(pin)
+{
+  var url = '/status/'+pin;
+  var icon = $('#row'+pin+' #icon');
+  $.get(url, function(data) {
+    img = image_tag(data);
+    $(icon).html(img);
+  });
+}
+
 $('.on_button').click(function() {
   var url = $(this).attr("href");
-  $.get(url, function(data) {});
+  var icon = $(this).closest('tr').find('#icon');
+  $.get(url, function(data) {
+    $(icon).html(image_tag(data));
+  });
   return false;
 });
 
 $('.off_button').click(function() {
   var url = $(this).attr("href");
-  $.get(url, function(data) {});
+  var icon = $(this).closest('tr').find('#icon');
+  $.get(url, function(data) {
+    $(icon).html(image_tag(data));
+  });
   return false;
 });
 
+for (var i=1;i<=8;i++) {
+  update_icon(i);
+}
 </script>
 
 </body>
